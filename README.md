@@ -26,7 +26,7 @@
 7. [场景编辑器（?edit=1）](#7-场景编辑器edit1)
 8. [2D 分件骨骼系统（纸片人）](#8-2d-分件骨骼系统纸片人)
 9. [手把手：做一个自己的游戏场景](#9-手把手做一个自己的游戏场景)
-10. [依赖与 CDN 切换](#10-依赖与-cdn-切换)
+10. [依赖与离线化](#10-依赖与离线化)
 11. [常见问题](#11-常见问题)
 
 ---
@@ -87,7 +87,7 @@ index.html  ──<script type="module">──▶  game/main.js  ──▶  engi
 └──────────────▲────────────────────────────────────────────┘
                │  import map
 ┌──────────────┴────────────────────────────────────────────┐
-│  three / gsap / cannon-es / howler  （CDN 或本地 /libs）    │
+│  three / gsap / cannon-es / howler  （本地 /libs，零 CDN 依赖）  │
 └───────────────────────────────────────────────────────────┘
 ```
 
@@ -108,8 +108,8 @@ CatWab/
 ├── README.md                   # 本文档（人类入门）
 ├── AIdocument.md               # AI 上下文说明书（发给 AI 用：全量 API + 修改剧本 + 坑清单）
 │
-├── /libs
-│   └── README.md               # 离线部署时如何下载第三方库、如何切到本地路径
+├── /libs                       # 第三方库发行文件 1.95MB（importmap 默认源，零 CDN）
+│   └── README.md               # 文件清单 / 重下与升级 / 应急切 CDN
 │
 ├── /assets
 │   ├── README.md               # 真实资源的命名约定（贴图/音频/JSON）与加载方法
@@ -138,7 +138,8 @@ CatWab/
 │   ├── MiniScene.js            # 最小冒烟场景（切关往返验证）
 │
 └── /tools                      # ▼ 工程脚本（开发期用，不进运行时）
-    └── check-fn-refs.mjs       # 核对脚本：重写文件后防丢工具函数/方法（见第 7 节"防丢清单"）
+    ├── check-fn-refs.mjs       # 核对脚本：重写文件后防丢工具函数/方法（见第 7 节"防丢清单"）
+    └── vendor-libs.mjs         # 依赖本地化：下载/校验 /libs 下的第三方库（见 libs/README.md）
 ```
 
 **推荐阅读顺序（也是理解顺序）：**
@@ -585,7 +586,7 @@ await director.loadScene('mygame');         // 替换 director.loadScene('sandbo
 
 ---
 
-## 10. 依赖与 CDN 切换
+## 10. 依赖与离线化
 
 依赖统一由 `index.html` 的 `<script type="importmap">` 管理，四个标识符固定为：
 
@@ -596,14 +597,21 @@ await director.loadScene('mygame');         // 替换 director.loadScene('sandbo
 | `cannon-es` | 0.20.0 | 物理 |
 | `howler` | 2.2.4 | 文件音频播放（懒加载，可缺省） |
 
-默认源是 **npmmirror**（国内直连），例外：`cannon-es` 走 **unpkg**
-（npmmirror 的 unpkg-files 白名单不含它，返回 403）。
+**默认源是本地 `/libs/`**——发行文件已随仓库分发，运行时不请求任何 CDN，
+拷到内网 / 离线环境直接能跑。维护命令：
 
-需要切换时，打开 `index.html` 把 `imports` 整体替换为注释里的备选块即可：
+```bash
+node tools/vendor-libs.mjs           # 重新下载全部依赖（npmmirror → jsdelivr → unpkg 多源兜底）
+node tools/vendor-libs.mjs --check   # 离线校验文件完整性（防 HTML 错误页/截断）
+```
 
-- 备选 A：unpkg 全家桶
-- 备选 B：jsdelivr 全家桶
-- 备选 C：本地 `/libs/` 离线（下载脚本见 [libs/README.md](libs/README.md)）
+升级版本：改 `tools/vendor-libs.mjs` 顶部 `VERSIONS` **和** `index.html` importmap 里的版本号（两处同步），再重跑脚本。
+
+CDN 仅作应急（本地文件意外丢失时），打开 `index.html` 把 `imports` 整体替换为注释里的备选块：
+
+- 备选 A：npmmirror + unpkg（`cannon-es` 必须走 unpkg——npmmirror 白名单外 403）
+- 备选 B：unpkg 全家桶
+- 备选 C：jsdelivr 全家桶
 
 ---
 

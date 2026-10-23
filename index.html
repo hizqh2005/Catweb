@@ -8,42 +8,43 @@
 
   <!--
     依赖统一由 ImportMap 管理，零构建、零打包。
-    默认源：npmmirror（国内可直连）。注意 cannon-es 例外——
-    npmmirror 的 unpkg-files 白名单不含 cannon-es（返回 403），故该项走 unpkg。
+    默认源：本地 /libs/（依赖发行文件已随仓库分发，离线/内网可直接跑，不依赖任何 CDN）。
+    重新下载 / 升级版本：node tools/vendor-libs.mjs（详见 libs/README.md）。
+    cannon-es 在 npmmirror 的 unpkg-files 白名单外（403），任何 CDN 方案该项都必须走 unpkg/jsdelivr。
     3D 操纵轴 TransformControls 由 three/addons/ 前缀映射覆盖，此处单列显式声明。
-    四套等价映射如下，切换时整体替换 "imports" 内容即可（新条目可省略，
-    three/addons/ 前缀会兜住 examples/jsm/ 下所有子模块）。
+    下列 CDN 备选仅作应急（本地文件丢失时临时改），切换时整体替换 "imports" 内容即可
+    （新条目可省略，three/addons/ 前缀会兜住 examples/jsm/ 下所有子模块）。
 
-    ── 备选 A：unpkg ─────────────────────────────────────────────
+    ── 备选 A：npmmirror + unpkg（国内直连）────────────────────
+    "three":        "https://registry.npmmirror.com/three/0.170.0/files/build/three.module.js",
+    "three/addons/":"https://registry.npmmirror.com/three/0.170.0/files/examples/jsm/",
+    "gsap":         "https://registry.npmmirror.com/gsap/3.12.5/files/index.js",
+    "cannon-es":    "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+    "howler":       "https://registry.npmmirror.com/howler/2.2.4/files/dist/howler.js"
+
+    ── 备选 B：unpkg ─────────────────────────────────────────────
     "three":        "https://unpkg.com/three@0.170.0/build/three.module.js",
     "three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/",
     "gsap":         "https://unpkg.com/gsap@3.12.5/index.js",
     "cannon-es":    "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
     "howler":       "https://unpkg.com/howler@2.2.4/dist/howler.js"
 
-    ── 备选 B：jsdelivr ──────────────────────────────────────────
+    ── 备选 C：jsdelivr ──────────────────────────────────────────
     "three":        "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
     "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
     "gsap":         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
     "cannon-es":    "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js",
     "howler":       "https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.js"
-
-    ── 备选 C：本地离线 /libs/（下载方法见 /libs/README.md）──────
-    "three":        "./libs/three/build/three.module.js",
-    "three/addons/":"./libs/three/examples/jsm/",
-    "gsap":         "./libs/gsap/index.js",
-    "cannon-es":    "./libs/cannon-es/dist/cannon-es.js",
-    "howler":       "./libs/howler/dist/howler.js"
   -->
   <script type="importmap">
   {
     "imports": {
-      "three": "https://registry.npmmirror.com/three/0.170.0/files/build/three.module.js",
-      "three/addons/": "https://registry.npmmirror.com/three/0.170.0/files/examples/jsm/",
-      "three/addons/controls/TransformControls.js": "https://registry.npmmirror.com/three/0.170.0/files/examples/jsm/controls/TransformControls.js",
-      "gsap": "https://registry.npmmirror.com/gsap/3.12.5/files/index.js",
-      "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
-      "howler": "https://registry.npmmirror.com/howler/2.2.4/files/dist/howler.js"
+      "three": "./libs/three/build/three.module.js",
+      "three/addons/": "./libs/three/examples/jsm/",
+      "three/addons/controls/TransformControls.js": "./libs/three/examples/jsm/controls/TransformControls.js",
+      "gsap": "./libs/gsap/index.js",
+      "cannon-es": "./libs/cannon-es/dist/cannon-es.js",
+      "howler": "./libs/howler/dist/howler.js"
     }
   }
   </script>
