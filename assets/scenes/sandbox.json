@@ -1,0 +1,54 @@
+{
+  "name": "sandbox",
+  "version": 1,
+  "objects": [
+    {
+      "id": "table",
+      "type": "table",
+      "position": { "x": 0, "y": -0.4, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "props": {}
+    },
+    {
+      "id": "hero",
+      "type": "skeleton",
+      "position": { "x": 5.3, "y": 0, "z": -3.6 },
+      "rotation": { "x": 0, "y": -0.25, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "props": { "rig": "hero", "facing": "yaw", "shadow": true, "shadowSize": 2.3 }
+    },
+    {
+      "id": "dice",
+      "type": "dice",
+      "position": { "x": 0, "y": -20, "z": 0 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "props": {}
+    },
+    {
+      "id": "barrel_1",
+      "type": "prop",
+      "position": { "x": -5.4, "y": 0.65, "z": -2.8 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "props": { "shape": "cylinder", "color": "#b5651d", "radius": 0.72, "height": 1.3 }
+    },
+    {
+      "id": "crate_1",
+      "type": "prop",
+      "position": { "x": -4.3, "y": 0.55, "z": 3.0 },
+      "rotation": { "x": 0, "y": 0.4, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "props": { "shape": "box", "color": "#a9744f", "size": 1.1 }
+    },
+    {
+      "id": "lamp_1",
+      "type": "prop",
+      "position": { "x": 0, "y": 1.2, "z": -3.2 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "scale": { "x": 1, "y": 1, "z": 1 },
+      "props": { "shape": "cylinder", "color": "#5c7c9c", "radius": 0.35, "height": 2.4 }
+    }
+  ]
+}

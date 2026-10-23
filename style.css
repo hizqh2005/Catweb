@@ -1,0 +1,161 @@
+/* 全局样式：全屏自适应 + UI 穿透控制 */
+
+:root {
+  --hud-fg: #f4f1ea;
+  --hud-bg: rgba(18, 22, 30, 0.55);
+  --hud-border: rgba(255, 255, 255, 0.14);
+  --accent: #6ea8fe;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0e14;
+  color: var(--hud-fg);
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+}
+
+#game-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: none;
+}
+
+/* HUD 整层穿透指针事件，3D 拾取在下方 canvas 生效 */
+.hud {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  pointer-events: none;
+}
+
+.hud-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.panel {
+  pointer-events: auto;
+  padding: 12px 14px;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.panel h1 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.stat-line {
+  min-width: 180px;
+  font-size: 12px;
+  line-height: 1.7;
+  opacity: 0.85;
+  white-space: pre-wrap;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 420px;
+}
+
+button {
+  pointer-events: auto;
+  cursor: pointer;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--hud-fg);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hud-border);
+  border-radius: 999px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+button:hover {
+  background: rgba(110, 168, 254, 0.28);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+button.on {
+  background: rgba(110, 168, 254, 0.45);
+  border-color: var(--accent);
+}
+
+.toast {
+  align-self: center;
+  padding: 10px 18px;
+  font-size: 13px;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 720px) {
+  .hud {
+    padding: 10px;
+  }
+
+  .panel {
+    padding: 10px 12px;
+  }
+
+  .panel h1 {
+    font-size: 13px;
+  }
+
+  button {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+
+  .stat-line {
+    min-width: 140px;
+    font-size: 11px;
+  }
+}

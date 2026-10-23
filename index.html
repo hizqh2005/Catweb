@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>CatWab · 2.5D / 3D 卡牌沙盒</title>
+  <link rel="stylesheet" href="./style.css" />
+
+  <!--
+    依赖统一由 ImportMap 管理，零构建、零打包。
+    默认源：npmmirror（国内可直连）。注意 cannon-es 例外——
+    npmmirror 的 unpkg-files 白名单不含 cannon-es（返回 403），故该项走 unpkg。
+    3D 操纵轴 TransformControls 由 three/addons/ 前缀映射覆盖，此处单列显式声明。
+    四套等价映射如下，切换时整体替换 "imports" 内容即可（新条目可省略，
+    three/addons/ 前缀会兜住 examples/jsm/ 下所有子模块）。
+
+    ── 备选 A：unpkg ─────────────────────────────────────────────
+    "three":        "https://unpkg.com/three@0.170.0/build/three.module.js",
+    "three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/",
+    "gsap":         "https://unpkg.com/gsap@3.12.5/index.js",
+    "cannon-es":    "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+    "howler":       "https://unpkg.com/howler@2.2.4/dist/howler.js"
+
+    ── 备选 B：jsdelivr ──────────────────────────────────────────
+    "three":        "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+    "gsap":         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+    "cannon-es":    "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js",
+    "howler":       "https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.js"
+
+    ── 备选 C：本地离线 /libs/（下载方法见 /libs/README.md）──────
+    "three":        "./libs/three/build/three.module.js",
+    "three/addons/":"./libs/three/examples/jsm/",
+    "gsap":         "./libs/gsap/index.js",
+    "cannon-es":    "./libs/cannon-es/dist/cannon-es.js",
+    "howler":       "./libs/howler/dist/howler.js"
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://registry.npmmirror.com/three/0.170.0/files/build/three.module.js",
+      "three/addons/": "https://registry.npmmirror.com/three/0.170.0/files/examples/jsm/",
+      "three/addons/controls/TransformControls.js": "https://registry.npmmirror.com/three/0.170.0/files/examples/jsm/controls/TransformControls.js",
+      "gsap": "https://registry.npmmirror.com/gsap/3.12.5/files/index.js",
+      "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+      "howler": "https://registry.npmmirror.com/howler/2.2.4/files/dist/howler.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- 原生 HTML HUD 层：整体 pointer-events:none 穿透给 3D 拾取，仅按钮收回事件 -->
+    <div id="hud" class="hud">
+      <div class="hud-top">
+        <section class="panel">
+          <h1>CatWab 沙盒</h1>
+          <div id="stat-line" class="stat-line">引擎启动中…</div>
+        </section>
+        <section class="panel buttons">
+          <button id="btn-draw" type="button">抽牌</button>
+          <button id="btn-shuffle" type="button">重排手牌</button>
+          <button id="btn-dice" type="button">掷骰子</button>
+          <button id="btn-walk" type="button">走路</button>
+          <button id="btn-shake" type="button">震屏</button>
+          <button id="btn-camera" type="button">正交相机</button>
+          <button id="btn-bgm" type="button">BGM</button>
+          <button id="btn-edit" type="button" onclick="location.href='?edit=1'">场景编辑器</button>
+        </section>
+      </div>
+      <div id="toast" class="toast"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./game/main.js"></script>
+</body>
+</html>
